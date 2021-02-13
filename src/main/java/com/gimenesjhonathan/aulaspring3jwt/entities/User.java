@@ -1,12 +1,20 @@
 package com.gimenesjhonathan.aulaspring3jwt.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
+import com.gimenesjhonathan.aulaspring3jwt.enums.Role;
 
 @Entity
 @Table(name = "tb_user")
@@ -21,7 +29,12 @@ public class User implements Serializable {
 	private String email;
 	private String password;
 	
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "tb_role")
+	private Set<Integer> roles = new HashSet<>();
+	
 	public User() {
+		addRole(Role.CLIENT);
 	}
 
 	public User(Long id, String name, String email, String password) {
@@ -30,6 +43,7 @@ public class User implements Serializable {
 		this.name = name;
 		this.email = email;
 		this.password = password;
+		addRole(Role.CLIENT);
 	}
 
 	public Long getId() {
@@ -62,6 +76,14 @@ public class User implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public Set<Role> getPerfis() {
+		return roles.stream().map(x -> Role.valueOf(x)).collect(Collectors.toSet());
+	}
+	
+	public void addRole(Role role) {
+		roles.add(role.getCod());
 	}
 
 	@Override
