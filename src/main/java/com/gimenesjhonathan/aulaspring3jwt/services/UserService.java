@@ -4,12 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.gimenesjhonathan.aulaspring3jwt.entities.User;
 import com.gimenesjhonathan.aulaspring3jwt.exceptions.ResourceNotFoundException;
 import com.gimenesjhonathan.aulaspring3jwt.repositories.UserRepository;
+import com.gimenesjhonathan.aulaspring3jwt.security.UserSS;
 
 @Service
 public class UserService {
@@ -32,5 +34,13 @@ public class UserService {
 	public User insert(User obj) {
 		obj.setPassword(passwordEncoder.encode(obj.getPassword()));
 		return repository.save(obj);
+	}
+	
+	public static UserSS authenticated() {
+		try {
+			return (UserSS) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		} catch (Exception e) {
+			return null;
+		}
 	}
 }
