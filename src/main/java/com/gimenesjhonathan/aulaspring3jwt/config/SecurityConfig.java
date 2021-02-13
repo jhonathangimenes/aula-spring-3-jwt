@@ -16,6 +16,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.gimenesjhonathan.aulaspring3jwt.security.JWTAuthenticationFilter;
+import com.gimenesjhonathan.aulaspring3jwt.security.JWTAuthorizationFilter;
 import com.gimenesjhonathan.aulaspring3jwt.security.JWTUtil;
 
 @Configuration
@@ -45,6 +46,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.authenticated();
 		
 		http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+		http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
 	
