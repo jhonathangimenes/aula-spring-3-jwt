@@ -2,7 +2,7 @@ package com.gimenesjhonathan.aulaspring3jwt.enums;
 
 public enum Role {
 	ADMIN(1, "ROLE_ADMIN"),
-	CLIENT(2, "ROLE_CLIENTE");
+	CLIENT(2, "ROLE_CLIENT");
 	
 	private int cod;
 	private String description;
